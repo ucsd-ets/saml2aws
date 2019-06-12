@@ -18,6 +18,7 @@ import (
 	"github.com/versent/saml2aws/pkg/provider/pingone"
 	"github.com/versent/saml2aws/pkg/provider/psu"
 	"github.com/versent/saml2aws/pkg/provider/shibboleth"
+	"github.com/versent/saml2aws/pkg/provider/ucsd"
 )
 
 // ProviderList list of providers with their MFAs
@@ -37,6 +38,7 @@ var MFAsByProvider = ProviderList{
 	"Shibboleth": []string{"Auto"},
 	"PSU":        []string{"Auto"},
 	"F5APM":      []string{"Auto"},
+	"UCSD":       []string{"Auto"},
 }
 
 // Names get a list of provider names
@@ -142,6 +144,11 @@ func NewSAMLClient(idpAccount *cfg.IDPAccount) (SAMLClient, error) {
 			return nil, fmt.Errorf("Invalid MFA type: %v for %v provider", idpAccount.MFA, idpAccount.Provider)
 		}
 		return f5apm.New(idpAccount)
+        case "UCSD":
+                if invalidMFA(idpAccount.Provider, idpAccount.MFA) {
+                        return nil, fmt.Errorf("Invalid MFA type: %v for %v provider", idpAccount.MFA, idpAccount.Provider)
+                }
+                return ucsd.New(idpAccount)
 
 	default:
 		return nil, fmt.Errorf("Invalid provider: %v", idpAccount.Provider)
