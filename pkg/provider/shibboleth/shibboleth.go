@@ -54,7 +54,8 @@ func (sc *Client) Authenticate(loginDetails *creds.LoginDetails) (string, error)
 	var authSubmitURL string
 	var samlAssertion string
 
-	shibbolethURL := fmt.Sprintf("%s/idp/profile/SAML2/Unsolicited/SSO?providerId=%s", loginDetails.URL, sc.idpAccount.AmazonWebservicesURN)
+	shibbolethURL := fmt.Sprintf("%s/tritON/profile/SAML2/Unsolicited/SSO?providerId=%s", loginDetails.URL, sc.idpAccount.AmazonWebservicesURN)
+//	shibbolethURL := fmt.Sprintf("%s/idp/profile/SAML2/Unsolicited/SSO?providerId=%s", loginDetails.URL, sc.idpAccount.AmazonWebservicesURN)
 
 	res, err := sc.client.Get(shibbolethURL)
 	if err != nil {
